@@ -1,5 +1,5 @@
-FROM imbios/bun-node:1.1.4-21.7.3-debian
-#FROM node:21.2.0-bookworm-slim as build
+#FROM imbios/bun-node:1.1.4-21.7.3-debian
+FROM node:21.2.0-bookworm-slim as build
 WORKDIR /usr/src/app
 
 
