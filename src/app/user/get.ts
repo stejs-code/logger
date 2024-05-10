@@ -1,6 +1,8 @@
-import { Context, index } from "~/app/context"
+import type { Context } from "~/app/context"
+import { index } from "~/app/context"
 import { ZodError } from "zod"
-import { User, zUser } from "~/app/user/main"
+import type { User } from "~/app/user/main"
+import { zUser } from "~/app/user/main"
 
 export async function getUserByApiKey(ctx: Context, api_key: string) {
     try {
@@ -8,7 +10,7 @@ export async function getUserByApiKey(ctx: Context, api_key: string) {
             index: index("log-user"),
             query: {
                 term: {
-                    "api_key.keyword": api_key,
+                    api_key: api_key,
                 },
             },
         })

@@ -18,6 +18,7 @@ export async function authenticate(ev: RequestEvent) {
         return user
     }
 
+    console.log(user)
     throw ev.json(401, {
         success: false as const,
         message: "unknown api key",
