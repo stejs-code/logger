@@ -6,8 +6,6 @@ WORKDIR /usr/src/app
 COPY ./package.json ./
 COPY ./package-lock.json ./
 
-RUN bun -v
-
 RUN npm ci
 
 COPY ./ ./
