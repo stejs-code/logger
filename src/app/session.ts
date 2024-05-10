@@ -2,8 +2,8 @@ import { z } from "zod"
 import type { Context } from "~/app/context"
 import type { RequestHandler } from "@builder.io/qwik-city"
 import { isDev } from "@builder.io/qwik/build"
-import {zUser} from "~/app/user/main";
-import {defer} from "~/components/utils/utils";
+import { zUser } from "~/app/user/main"
+import { defer } from "~/components/utils/utils"
 
 export const zSession = z.object({
     id: z.string().uuid(),

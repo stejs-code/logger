@@ -1,6 +1,5 @@
 import { component$, type HTMLAttributes, Slot } from "@builder.io/qwik"
-import {cn} from "~/components/utils/utils";
-
+import { cn } from "~/components/utils/utils"
 
 export const Table = component$<HTMLAttributes<HTMLTableElement>>(
     ({ class: className, ...props }) => {

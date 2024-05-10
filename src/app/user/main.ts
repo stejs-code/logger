@@ -1,5 +1,5 @@
-import {z} from "zod"
-import * as bcrypt from 'bcrypt';
+import { z } from "zod"
+import * as bcrypt from "bcrypt"
 
 export const zUser = z.object({
     id: z.string(),
@@ -12,12 +12,11 @@ export type User = z.infer<typeof zUser>
 
 export const Encrypt = {
     cryptPassword: (password: string) =>
-        bcrypt.genSalt(10)
-            .then((salt => bcrypt.hash(password, salt)))
-            .then(hash => hash),
+        bcrypt
+            .genSalt(10)
+            .then((salt) => bcrypt.hash(password, salt))
+            .then((hash) => hash),
 
     comparePassword: (password: string, hashPassword: string) =>
-        bcrypt.compare(password, hashPassword)
-            .then(resp => resp)
-
+        bcrypt.compare(password, hashPassword).then((resp) => resp),
 }

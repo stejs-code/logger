@@ -3,9 +3,7 @@ import { getUserByApiKey } from "~/app/user/get"
 import { Context } from "~/app/context"
 
 export async function authenticate(ev: RequestEvent) {
-    const key = ev.request.headers
-        .get("Authorization")
-        ?.slice("Bearer ".length)
+    const key = ev.request.headers.get("Authorization")?.slice("Bearer ".length)
 
     if (!key)
         throw ev.json(401, {

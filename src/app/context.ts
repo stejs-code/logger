@@ -1,10 +1,13 @@
-import type {EnvGetter, RequestEventBase,} from "@builder.io/qwik-city/middleware/request-handler"
-import {Client} from "@elastic/elasticsearch"
-import {redis} from "./redis"
-import type {RedisClientType} from "redis"
-import {isBrowser, isDev} from "@builder.io/qwik/build"
-import {User} from "~/app/user/main"
-import {type Session} from "~/app/session";
+import type {
+    EnvGetter,
+    RequestEventBase,
+} from "@builder.io/qwik-city/middleware/request-handler"
+import { Client } from "@elastic/elasticsearch"
+import { redis } from "./redis"
+import type { RedisClientType } from "redis"
+import { isBrowser, isDev } from "@builder.io/qwik/build"
+import { User } from "~/app/user/main"
+import { type Session } from "~/app/session"
 
 if (isBrowser) console.log("!!ATTENTION CITIZEN!!\n".repeat(30))
 
@@ -28,13 +31,13 @@ export class Context {
     //     return this.user?.group.id === 1
     // }
 
-    static initElasticsearch({env}: { env: EnvGetter }) {
+    static initElasticsearch({ env }: { env: EnvGetter }) {
         const username = env.get("ELASTIC_USER")
         const password = env.get("ELASTIC_PASSWORD")
 
         return new Client({
             node: env.get("ELASTIC_URL"),
-            auth: password && username ? {password, username} : undefined,
+            auth: password && username ? { password, username } : undefined,
         })
     }
 }

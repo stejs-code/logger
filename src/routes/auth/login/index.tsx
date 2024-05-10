@@ -1,22 +1,27 @@
-import {component$, useTask$} from "@builder.io/qwik"
-import type {RequestHandler} from "@builder.io/qwik-city"
-import {Form, routeAction$, useLocation, useNavigate,} from "@builder.io/qwik-city"
-import {TextInput} from "~/components/ui/form/textInput"
-import {Button} from "~/components/ui/button"
-import {Context, index} from "~/app/context"
-import {addOneDay} from "~/components/utils/utils"
-import {isDev} from "@builder.io/qwik/build"
-import {postSession} from "~/app/session";
-import {z} from "zod";
-import type {User} from "~/app/user/main";
-import {Encrypt} from "~/app/user/main";
+import { component$, useTask$ } from "@builder.io/qwik"
+import type { RequestHandler } from "@builder.io/qwik-city"
+import {
+    Form,
+    routeAction$,
+    useLocation,
+    useNavigate,
+} from "@builder.io/qwik-city"
+import { TextInput } from "~/components/ui/form/textInput"
+import { Button } from "~/components/ui/button"
+import { Context, index } from "~/app/context"
+import { addOneDay } from "~/components/utils/utils"
+import { isDev } from "@builder.io/qwik/build"
+import { postSession } from "~/app/session"
+import { z } from "zod"
+import type { User } from "~/app/user/main"
+import { Encrypt } from "~/app/user/main"
 
 export default component$(() => {
     const action = useAuthSignIn()
     const navigate = useNavigate()
     const location = useLocation()
 
-    useTask$(({track}) => {
+    useTask$(({ track }) => {
         track(() => action.value?.status)
         if (action.value?.status === "success") {
             navigate(new URL(location.url).searchParams.get("next") || "/")
@@ -56,12 +61,14 @@ export const onGet: RequestHandler = (ev) => {
 
 export const useAuthSignIn = routeAction$(async (data, event) => {
     const ctx = new Context(event)
-    const {elastic} = ctx
+    const { elastic } = ctx
 
-    const result = z.object({
-        name: z.string(),
-        password: z.string()
-    }).safeParse(data)
+    const result = z
+        .object({
+            name: z.string(),
+            password: z.string(),
+        })
+        .safeParse(data)
 
     if (!result.success) {
         console.log(result.error)
@@ -74,7 +81,7 @@ export const useAuthSignIn = routeAction$(async (data, event) => {
     const response = await elastic.search<User>({
         index: index("log-user"),
         query: {
-            term: {"name.keyword": result.data.name}
+            term: { "name.keyword": result.data.name },
         },
     })
 
@@ -85,11 +92,14 @@ export const useAuthSignIn = routeAction$(async (data, event) => {
         }
 
     const user = {
-        ...response.hits.hits[0]._source as User,
-        id: response.hits.hits[0]._id
+        ...(response.hits.hits[0]._source as User),
+        id: response.hits.hits[0]._id,
     }
 
-    if (!user.password || !(await Encrypt.comparePassword(result.data.password, user.password))) {
+    if (
+        !user.password ||
+        !(await Encrypt.comparePassword(result.data.password, user.password))
+    ) {
         return {
             status: "fail",
             message: "Wrong password",

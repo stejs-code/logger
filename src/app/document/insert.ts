@@ -1,9 +1,9 @@
-import type {Context} from "~/app/context"
-import {index} from "~/app/context"
-import type {Document} from "~/app/document/main"
-import {zDocument} from "~/app/document/main"
-import {defer} from "~/components/utils/utils"
-import {ZodError} from "zod"
+import type { Context } from "~/app/context"
+import { index } from "~/app/context"
+import type { Document } from "~/app/document/main"
+import { zDocument } from "~/app/document/main"
+import { defer } from "~/components/utils/utils"
+import { ZodError } from "zod"
 
 export function insert(
     ctx: Context,
@@ -21,27 +21,26 @@ export function insert(
         )
 
         defer(async () => {
-                try {
-                    await ctx.elastic.bulk({
-                        operations: documents.flatMap((i) => [
-                            {
-                                index: {
-                                    _index: index("log-document"),
-                                    _id: i.id,
-                                },
+            try {
+                await ctx.elastic.bulk({
+                    operations: documents.flatMap((i) => [
+                        {
+                            index: {
+                                _index: index("log-document"),
+                                _id: i.id,
                             },
-                            {
-                                ...i,
-                                id: undefined,
-                            },
-                        ]),
-                    })
-                } catch (e) {
-                    console.log(e)
-                }
+                        },
+                        {
+                            ...i,
+                            id: undefined,
+                        },
+                    ]),
+                })
+            } catch (e) {
+                console.log(e)
             }
-        )
-        return {success: true as const}
+        })
+        return { success: true as const }
     } catch (e) {
         if (e instanceof ZodError) {
             return {
@@ -52,9 +51,9 @@ export function insert(
         }
 
         if (e instanceof Error) {
-            return {success: false as const, message: e.message}
+            return { success: false as const, message: e.message }
         }
 
-        return {success: false as const, message: "unknown"}
+        return { success: false as const, message: "unknown" }
     }
 }

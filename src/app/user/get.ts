@@ -1,6 +1,6 @@
 import { Context, index } from "~/app/context"
 import { ZodError } from "zod"
-import {User, zUser} from "~/app/user/main"
+import { User, zUser } from "~/app/user/main"
 
 export async function getUserByApiKey(ctx: Context, api_key: string) {
     try {
@@ -20,7 +20,7 @@ export async function getUserByApiKey(ctx: Context, api_key: string) {
         return {
             ...zUser.parse({
                 ...(response.hits.hits[0]._source as User),
-                id: response.hits.hits[0]._id
+                id: response.hits.hits[0]._id,
             }),
             success: true as const,
         }

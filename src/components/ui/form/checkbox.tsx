@@ -1,8 +1,8 @@
-import type {InputHTMLAttributes, QRL} from "@builder.io/qwik"
-import {component$, useSignal, useTask$} from "@builder.io/qwik"
-import {cn, randomString} from "~/components/utils/utils"
-import {LuCheck} from "@qwikest/icons/lucide"
-import type {JSX} from "@builder.io/qwik/jsx-runtime"
+import type { InputHTMLAttributes, QRL } from "@builder.io/qwik"
+import { component$, useSignal, useTask$ } from "@builder.io/qwik"
+import { cn, randomString } from "~/components/utils/utils"
+import { LuCheck } from "@qwikest/icons/lucide"
+import type { JSX } from "@builder.io/qwik/jsx-runtime"
 
 export type CheckboxProps = InputHTMLAttributes<HTMLInputElement> & {
     required?: boolean
@@ -15,21 +15,21 @@ export type CheckboxProps = InputHTMLAttributes<HTMLInputElement> & {
  */
 export const Checkbox = component$<CheckboxProps>(
     ({
-         required,
-         class: className,
-         error,
-         label,
-         onInput$,
-         onChange$,
-         onBlur$,
-         checked,
-         ...props
-     }) => {
+        required,
+        class: className,
+        error,
+        label,
+        onInput$,
+        onChange$,
+        onBlur$,
+        checked,
+        ...props
+    }) => {
         const on = useSignal(!!checked)
         const id = useSignal(randomString)
         const ref = useSignal<HTMLInputElement>()
 
-        useTask$(({track}) => {
+        useTask$(({ track }) => {
             track(() => checked)
             if (checked !== undefined) on.value = checked
         })
@@ -56,8 +56,7 @@ export const Checkbox = component$<CheckboxProps>(
                         onClick$={(event) => {
                             on.value = !on.value
                             if (ref.value) ref.value.checked = on.value
-                            ;
-                            (
+                            ;(
                                 [onChange$, onInput$]
                                     .flat()
                                     .filter((i) => !!i) as QRL<
@@ -66,7 +65,7 @@ export const Checkbox = component$<CheckboxProps>(
                             ).forEach((i) => i(event, ref.value))
                         }}
                         onBlur$={(event) => {
-                            (
+                            ;(
                                 [onBlur$].flat().filter((i) => !!i) as QRL<
                                     (e: Event, el: Element | undefined) => void
                                 >[]
